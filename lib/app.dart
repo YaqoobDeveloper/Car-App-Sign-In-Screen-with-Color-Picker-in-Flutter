@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'core/theme/app_theme.dart';
-import 'screens/login_screen.dart';
+import 'screens/showroom_login_screen.dart';
 
 class CarApp extends StatelessWidget {
   const CarApp({super.key});
@@ -12,7 +12,7 @@ class CarApp extends StatelessWidget {
       title: 'Car Dealership',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
-      home: const LoginScreen(),
+      home: const ShowroomLoginScreen(),
     );
   }
 }

@@ -3,23 +3,45 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 class CarIllustration extends StatelessWidget {
-  const CarIllustration({super.key, this.width = 310, this.height = 128});
+  const CarIllustration({
+    super.key,
+    this.width = 310,
+    this.height = 128,
+    this.bodyColor,
+  });
 
   final double width;
   final double height;
+
+  /// Paint colour; null keeps the original graphite finish.
+  final Color? bodyColor;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: width,
       height: height,
-      child: const CustomPaint(painter: _CarPainter()),
+      child: CustomPaint(painter: _CarPainter(bodyColor)),
     );
   }
 }
 
 class _CarPainter extends CustomPainter {
-  const _CarPainter();
+  const _CarPainter(this.bodyColor);
+
+  final Color? bodyColor;
+
+  List<Color> get _bodyGradient {
+    final base = bodyColor;
+    if (base == null) {
+      return const [Color(0xFF6A6C73), Color(0xFF2E2F35), Color(0xFF17181C)];
+    }
+    return [
+      Color.lerp(base, Colors.white, 0.28)!,
+      base,
+      Color.lerp(base, Colors.black, 0.5)!,
+    ];
+  }
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -56,11 +78,11 @@ class _CarPainter extends CustomPainter {
     canvas.drawPath(
       body,
       Paint()
-        ..shader = const LinearGradient(
+        ..shader = LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [Color(0xFF6A6C73), Color(0xFF2E2F35), Color(0xFF17181C)],
-          stops: [0.0, 0.55, 1.0],
+          colors: _bodyGradient,
+          stops: const [0.0, 0.55, 1.0],
         ).createShader(Offset.zero & size),
     );
 
@@ -158,5 +180,6 @@ class _CarPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_CarPainter oldDelegate) => false;
+  bool shouldRepaint(_CarPainter oldDelegate) =>
+      oldDelegate.bodyColor != bodyColor;
 }

@@ -54,15 +54,67 @@ class SocialButton extends StatelessWidget {
   }
 }
 
+class SocialPill extends StatelessWidget {
+  const SocialPill({
+    super.key,
+    required this.label,
+    required this.icon,
+    required this.onPressed,
+  });
+
+  final String label;
+  final Widget icon;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: 'Continue with $label',
+      child: OutlinedButton(
+        onPressed: onPressed,
+        style: OutlinedButton.styleFrom(
+          foregroundColor: AppColors.textPrimary,
+          minimumSize: const Size.fromHeight(50),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          side: const BorderSide(color: AppColors.border, width: 1.2),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadius.pill),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            icon,
+            const SizedBox(width: 8),
+            Flexible(
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 13.5,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class GoogleLogo extends StatelessWidget {
-  const GoogleLogo({super.key});
+  const GoogleLogo({super.key, this.size = 34});
+
+  final double size;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 34,
-      height: 34,
-      padding: const EdgeInsets.all(7),
+      width: size,
+      height: size,
+      padding: EdgeInsets.all(size * 0.2),
       decoration: const BoxDecoration(
         color: Colors.white,
         shape: BoxShape.circle,
@@ -130,23 +182,25 @@ class _GooglePainter extends CustomPainter {
 }
 
 class FacebookLogo extends StatelessWidget {
-  const FacebookLogo({super.key});
+  const FacebookLogo({super.key, this.size = 30});
+
+  final double size;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 30,
-      height: 30,
+      width: size,
+      height: size,
       decoration: const BoxDecoration(
         color: Color(0xFF1877F2),
         shape: BoxShape.circle,
       ),
       alignment: Alignment.center,
-      child: const Text(
+      child: Text(
         'f',
         style: TextStyle(
           color: Colors.white,
-          fontSize: 21.6,
+          fontSize: size * 0.72,
           height: 1.25,
           fontWeight: FontWeight.w800,
         ),
